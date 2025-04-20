@@ -1,0 +1,224 @@
+﻿@using TodoApp.ViewModels
+
+@{
+	ViewData["Title"] = "Chat";
+}
+
+<h1>Chat</h1>
+
+@model ChatViewModel
+
+<style>
+	body {
+		background-color: #f5f7fa;
+		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	}
+
+</style>
+
+<a asp-action="Index" asp-controller="Chat" class="btn btn-primary" style="background-color: #3498db ; border: none; padding: 5px 10px; font-size: 16px; border-radius: 8px;">
+	<i class="fa-solid fa-arrow-left"></i>
+</a>
+<div class="chat-container">
+	<div class="receiver-header">
+		
+			<div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mr-3 me-3" style="width:60px; height:60px; font-size: 24px;">
+				@if (string.IsNullOrEmpty(Model.ProfilePicPath))
+				{
+
+					@Model.ReceiverUserName.Substring(0, 1).ToUpper()
+				}
+				else
+				{
+					<img src="@Model.ProfilePicPath" class="w-100 h-100 rounded-circle" />
+				}
+			</div>
+			
+		
+		<h3 class="UserNameHeader userNameHead" id="userNameHead">@Model.ReceiverUserName</h3>
+	</div>
+
+	<div class="messages-box">
+		@foreach (var item in Model.Msgs)
+		{
+			if (item.IsCurrentUserSentMsg)
+			{
+				<div class="message sent-message">
+
+					<div class="d-flex justify-content-start">
+
+						<p>@item.Message</p>
+					</div>
+
+					<div class="d-flex justify-content-end">
+
+						<span class="sdateMsg">@item.Date</span>
+					</div>
+				</div>
+			}
+			else
+			{
+				<div class="message received-message ">
+					<div class="d-flex justify-content-start">
+
+						<p>@item.Message</p>
+					</div>
+
+					<div class="d-flex justify-content-end">
+
+						<span class="rdateMsg">@item.Date</span>
+					</div>
+				</div>
+			}
+		}
+	</div>
+
+	<div class="send-message-box">
+		<textarea rows="3" class="message-field" placeholder="Write Your Message"></textarea>
+		<button class="send-btn">Send</button>
+	</div>
+</div>
+
+<script src="/lib/microsoft-signalr/signalr.js"></script>
+
+@section Scripts {
+	<script>
+		var connection = new signalR.HubConnectionBuilder().withUrl("/HChatHub").build();
+
+		connection.start().then(function () {
+			console.log("Connected");
+		}).catch(function (err) {
+			console.error(err.toString());
+		});
+
+		const textarea = document.querySelector('.message-field');
+
+		textarea.addEventListener('keydown', (event) => {
+			if (event.key === 'Enter') {
+				var receiverId = "@Model.ReceiverId";
+			var message = $(".message-field").val();
+			console.log(message);
+			if(message!=null || message!== ""  || message.length ==0 || message.length >= 0   )
+			{
+
+			connection.invoke("SendMessage", receiverId, message);
+			$(".message-field").val("");
+			$(".message-field").focus();
+			}
+			else{
+			console.log("else")}
+			}
+		});
+
+		$(".send-btn").click(function () {
+			var receiverId = "@Model.ReceiverId";
+			var message = $(".message-field").val();
+				if(message!=null || message!= "")
+			{
+
+			connection.invoke("SendMessage", receiverId, message);
+			$(".message-field").val("");
+			$(".message-field").focus();
+			}
+		});
+
+		connection.on("ReceiveMessage", function (message, date, time, senderId) {
+			var msg = "";
+
+			if(localStorage.getItem('darkMode')==  "on")
+			{
+
+
+				if (senderId == "@Model.CurrentUserId") {
+				msg = `
+					<div class="message sent-message sendMsgDark">
+
+					<div class="d-flex justify-content-start">
+
+					<p>${message}</p>
+					</div>
+
+					<div class="d-flex justify-content-end">
+
+						<span class="sdateMsg">${time}</span>
+					</div>
+				</div>
+				`;
+			} else {
+				msg = `
+					<div class="message received-message received-messageDark">
+					<div class="d-flex justify-content-start">
+
+						<p>${message}</p>
+					</div>
+
+					<div class="d-flex justify-content-end">
+
+						<span class="rdateMsg">${time}</span>
+					</div>
+				</div>
+				`;
+			}
+
+
+
+
+
+
+
+
+
+
+			}
+			else
+			{
+
+				if (senderId == "@Model.CurrentUserId") {
+				msg = `
+					<div class="message sent-message">
+
+					<div class="d-flex justify-content-start">
+
+					<p>${message}</p>
+					</div>
+
+					<div class="d-flex justify-content-end">
+
+						<span class="sdateMsg">${time}</span>
+					</div>
+				</div>
+				`;
+			} else {
+				msg = `
+					<div class="message received-message">
+					<div class="d-flex justify-content-start">
+
+						<p>${message}</p>
+					</div>
+
+					<div class="d-flex justify-content-end">
+
+						<span class="rdateMsg">${time}</span>
+					</div>
+				</div>
+				`;
+			}
+
+
+
+			}
+
+
+
+
+			$(".messages-box").append(msg);
+			$(".messages-box").scrollTop($(".messages-box")[0].scrollHeight);
+		});
+
+		$(function () {
+			$(".messages-box").scrollTop($(".messages-box")[0].scrollHeight);
+		});
+	</script>
+}
+
+

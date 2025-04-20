@@ -1,0 +1,521 @@
+﻿html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.darkmode {
+    background-color: hsl(237, 14%, 26%) !important;
+    color: aliceblue;
+}
+
+.text-unmuted {
+    color: beige !important;
+    /*    font-size: smaller*/
+}
+
+.darkmode:hover {
+    color: lightgrey;
+}
+
+.darkmode:focus {
+    color: aliceblue;
+}
+/**======== My Own CSS ============*/
+:root {
+    /* Primary */
+    --Bright_Blue: hsl(220, 98%, 61%);
+    /* Light Theme */
+    --Very_Light_Gray: hsl(0, 0%, 98%);
+    --Very_Light_Grayish_Blue: hsl(236, 33%, 92%);
+    --Light_Grayish_Blue: hsl(233, 11%, 84%);
+    --Dark_Grayish_Blue: hsl(236, 9%, 61%);
+    --Very_Dark_Grayish_Blue: hsl(235, 19%, 35%);
+    /*  Dark Theme */
+    --Very_Dark_Blue: hsl(235, 21%, 11%);
+    --Very_Dark_Desaturated_Blue: hsl(235, 24%, 19%);
+    --Light-Grayish_Blue: hsl(234, 39%, 85%);
+    --Light-Grayish_Blue_hover: hsl(236, 33%, 92%);
+    --Dark_Grayish_Blue: hsl(234, 11%, 52%);
+    --Very_Dark_Grayish_Blue: hsl(233, 14%, 35%);
+    --Very_Dark_Grayish_Blue: hsl(237, 14%, 26%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Josefin Sans", "Courier New", Courier, monospace;
+}
+
+body {
+    min-height: 100vh;
+}
+
+.CoverPhoto img {
+    width: 100%;
+    object-fit: cover;
+    top: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
+}
+
+header .top-bar {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-end;
+    margin: 5rem 0 0 0;
+}
+
+.logo {
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5rem;
+    font-size: 2.4rem;
+}
+
+.SwitchMood {
+    cursor: pointer;
+}
+
+/* for dark and light mood */
+.bgDark {
+    display: none;
+}
+
+.bgLight {
+    display: block;
+}
+
+.dark-mode .bgDark {
+    display: block;
+}
+
+.dark-mode .bgLight {
+    display: none;
+}
+
+.lightIcon {
+    display: none;
+}
+
+.DarkIcon {
+    display: block;
+}
+
+.dark-mode .lightIcon {
+    display: block;
+}
+
+.dark-mode .DarkIcon {
+    display: none;
+}
+
+.dark-mode {
+    background-color: var(--Very_Dark_Blue);
+    color: var(--Light-Grayish_Blue);
+}
+
+    .dark-mode .NewTask, .MyNewTask,
+    .dark-mode .dropDownList {
+        background-color: hsl(237, 14%, 26%);
+    }
+
+/* /////////////////////////////////////////////////////// */
+.ToDoAppContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 2rem;
+}
+
+.NewTask {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--Very_Light_Gray);
+    border-radius: 0.5rem;
+    padding: 1em;
+    margin-block: 0.5rem;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 600px;
+}
+
+.MyNewTask {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--Very_Light_Gray);
+    border-radius: 0.5rem;
+    padding: 1.5em;
+    margin-block: 0.6rem;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.NewTask input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+}
+
+.MyNewTask input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+}
+
+.NewTask input::placeholder {
+    color: var(--Dark_Grayish_Blue);
+}
+
+.MyNewTask input::placeholder {
+    color: var(--Dark_Grayish_Blue);
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--Very_Light_Grayish_Blue);
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+    input[type="checkbox"]::before {
+        content: "✔";
+        position: absolute;
+        font-size: 14px;
+        top: 0;
+        left: 3px;
+        color: white;
+        transform: scale(0);
+        transition: transform 0.2s ease;
+    }
+
+    input[type="checkbox"]:checked {
+        background: linear-gradient( to bottom right, hsl(192, 100%, 67%), hsl(280, 87%, 65%) );
+    }
+
+        input[type="checkbox"]:checked::before {
+            transform: scale(1);
+        }
+
+        input[type="checkbox"]:checked + .taskText {
+            text-decoration: line-through;
+            color: gray;
+            opacity: 0.7;
+            transition: 0.2s ease-in-out;
+        }
+
+        input[type="checkbox"]:checked + .taskText {
+            text-decoration: line-through;
+            color: gray;
+            opacity: 0.7;
+            transition: 0.2s ease-in-out;
+        }
+
+/* /////////////////////////////////////////////////////// */
+.todo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+}
+
+.todo-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.taskText {
+    word-break: break-word;
+    flex: 1;
+}
+
+.Delete-btn {
+    /* margin-left: 32em; */
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    cursor: pointer
+}
+
+.chatClick {
+    cursor: pointer
+}
+
+.todo-item:hover .Delete-btn {
+    opacity: 1;
+}
+
+button {
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    cursor: pointer;
+}
+
+ul .todo-item {
+    list-style: none;
+    border-top: 1px solid black;
+    padding: 1rem;
+    margin: 0;
+    border-color: var(--Very_Light_Grayish_Blue);
+}
+
+.dropDownList {
+    background: var(--Very_Light_Gray);
+    border-radius: 0.5em;
+    padding: 1rem;
+    width: 100%;
+    /*    max-width: 600px;*/
+}
+/* /////////////////////////////////////////////////////// */
+.todo-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    padding-inline: 0.5em
+}
+
+.itemLeft,
+.Clear-completed, .nClear-completed {
+    color: var(--Dark_Grayish_Blue);
+}
+
+    .Clear-completed:hover {
+        color: red;
+        transform: scale(1.1);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .nClear-completed:hover {
+        color: green;
+        transform: scale(1.1);
+        transition: transform 0.2s ease-in-out;
+    }
+/*
+
+  filters button.selected {
+    color: hsl(220, 98%, 61%);
+}
+
+.filters button:hover {
+    color: var(--Very_Dark_Blue);
+}
+
+.filters button {
+    color: var(--Dark_Grayish_Blue);
+    margin: 0 0.5rem;
+}
+*/ .
+/* /////////////////////////////////////////////////////// */
+@media (max-width: 768px) {
+    .bgDark
+
+{
+    content: url("/images/bg-mobile-dark.jpg");
+}
+
+.bgLight {
+    content: url("/images/bg-mobile-light.jpg");
+}
+
+header .top-bar {
+    align-items: inherit;
+    justify-content: space-between;
+    margin: 5rem 2rem 2rem 2rem;
+}
+
+.NewTask,
+.dropDownList {
+    padding: 1rem;
+    font-size: 0.9rem;
+}
+
+.MyNewTask,
+.dropDownList {
+    padding: 1rem;
+    font-size: 0.9rem;
+}
+
+.logo {
+    font-size: 1.5rem;
+    letter-spacing: 0.2rem;
+}
+
+}
+/*
+
+    -------------
+*/
+
+.chat-container {
+    max-width: 900px;
+    margin: 40px auto;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+.receiver-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 15px;
+}
+
+    .receiver-header .first-letter {
+        background-color: #4a90e2;
+        color: white;
+        font-size: 22px;
+        font-weight: bold;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        border-radius: 50%;
+        margin-right: 15px;
+    }
+
+    .receiver-header h3 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 22px;
+        color: #333;
+    }
+
+.messages-box {
+    max-height: 450px;
+    overflow-y: auto;
+    margin-bottom: 25px;
+    padding-right: 10px;
+}
+
+.message {
+    padding: 12px 18px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    max-width: 70%;
+    word-wrap: break-word;
+    position: relative;
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.sent-message {
+    background-color: #E7FECC;
+    margin-left: auto;
+    text-align: right;
+    border-top-right-radius: 0;
+}
+
+.received-message {
+    background-color: #FFFFFF;
+    margin-right: auto;
+    text-align: left;
+    border-top-left-radius: 0;
+    border: solid 1px #9BA9B0;
+}
+
+    .received-message p {
+        color: #22282B;
+    }
+
+.sdateMsg {
+    color: black;
+}
+
+.message span {
+    display: block;
+    font-size: 11px;
+    color: #777;
+    margin-top: 5px;
+}
+
+.dateMsg {
+    color: #7E919A
+}
+
+.send-message-box {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.message-field {
+    flex: 1;
+    padding: 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    resize: none;
+}
+
+.send-btn {
+    padding: 12px 25px;
+    background-color: #4a90e2;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+    .send-btn:hover {
+        background-color: #357ab8;
+    }
+
+
+.chat-containerDark {
+    background-color: hsl(237, 14%, 26%) !important;
+}
+
+
+.UserNameHeader {
+    color: aliceblue !important
+}
+
+.sendMsgDark {
+    background-color: #1B1E20 !important;
+}
+
+.received-messageDark {
+    background-color: #ACADB9 !important;
+}

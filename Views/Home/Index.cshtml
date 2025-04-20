@@ -1,0 +1,188 @@
+﻿@{
+	ViewData["Title"] = "Home Page";
+}
+
+
+
+
+<main class="ToDoAppContainer">
+
+
+	<div class="dropDownList">
+
+		<div class="todo-footer">
+
+			<span class="itemLeft" id="leftTasks">@ViewBag.activeTasksCount Tasks left </span>
+
+			<div class="filters">
+			
+				<button class="nClear-completed" id="nClearCompleted" onclick="ClearActive()">Hide / Show Active</button>
+			</div>
+
+			<button class="Clear-completed" id="ClearCompleted" onclick="ClearComplete()">Hide / Show Completed</button>
+		</div>
+		<ul class="todo-list p-0" id="todo-list">
+			@foreach (var task in ViewBag.Tasks)
+			{
+				<li class="todo-item" id="item-@task.Id">
+					<div class="todo-content">
+						@if (@task.IsCompleted == true)
+						{
+
+							<input type="checkbox" class="checkbox checkedBefore" onclick="Check(@task.Id)" id="ckeckbox-@task.Id" checked />
+							<span class="text-danger" style="text-decoration: line-through;">@task.DeadLine.ToShortDateString()</span>
+							<span class="taskText" style="text-decoration: line-through;">
+								@task.Content
+
+							</span>
+						}
+						else
+						{
+							<input type="checkbox" class="checkbox notCheckedBefore" onclick="Check(@task.Id)" id="ckeckbox-@task.Id" />
+
+							<span class="text-danger">@task.DeadLine.ToShortDateString()</span>
+							<span class="taskText" style="text-decoration: none;">
+								@task.Content
+
+							</span>
+						}
+
+						@if (!string.IsNullOrEmpty(task.AssignToUserId))
+						{//onclick="GoToChat(@task.CreatedUser.Id)"
+							<span class="text-info me-1"> Assigned by :
+								<span class="text-reset chatClick" onclick="GoToChat(`@task.CreatedUser.UserName`)" id="chatid"> @task.CreatedUser.UserName </span>
+							</span>
+						}
+					</div>
+					@if (string.IsNullOrEmpty(task.AssignToUserId))
+					{
+						<div class="Delete-btn pointer-event" onclick="DeleteItem(@task.Id)">
+							<img src="/images/icon-cross.svg" alt="Delete">
+						</div>
+					}
+					
+				</li>
+
+			}
+		</ul>
+
+	</div>
+
+
+
+
+	<script>
+
+		function GoToChat(id){
+		
+			window.location.href=`/Chat/Chat?un=${id}`;
+		}
+
+		/**---------------------- */
+		function DeleteItem(taskId) {
+		console.log(taskId);
+		let deleteItem = document.getElementById(`item-${taskId}`);
+		// let deleteItem = document.getElementById(`item-${taskId}`);
+		let list = document.getElementById(`todo-list`);
+		list.removeChild(deleteItem);
+		$.ajax(
+		{url: `/Task/DeleteTask?id=${taskId}`,
+		success: function(result){
+		console.log("item Deleted Successfully")
+		}});
+		}
+		/**---------------------------------- */
+
+
+
+
+		let count = @ViewBag.activeTasksCount;
+		function Check(taskId) {
+		console.log(taskId);
+
+		let checkItem = document.getElementById(`ckeckbox-${taskId}`);
+		let Taskscount = document.getElementById(`leftTasks`);
+
+		if ($(checkItem).is(":checked")) {
+		checkItem.nextElementSibling.style.textDecoration = "line-through";
+		$("#leftTasks").html(`${--count} Tasks left `);
+		let next = checkItem.nextElementSibling;
+		let nnext = next.nextElementSibling;
+		nnext.style.textDecoration = "line-through";
+		console.log(" n " + next);
+		$.ajax({
+		url: `/Task/TaskChekedComplete?id=${taskId}`,
+		success: function (result) {
+		console.log("item TaskChekedComplete Successfully");
+		},
+		});
+		console.log("checked");
+		} else {
+		$("#leftTasks").html(`${++count} Tasks left `);
+
+		checkItem.nextElementSibling.style.textDecoration = "none";
+		let next = checkItem.nextElementSibling;
+		let nnext = next.nextElementSibling;
+		nnext.style.textDecoration = "none";
+		$.ajax({
+		url: `/Task/TaskChekedUncomplete?id=${taskId}`,
+		success: function (result) {
+		console.log("item TaskChekedUncomplete Successfully");
+		},
+		});
+
+		console.log("unchecked");
+		}
+		}
+
+		/**---------------------------------------- */
+
+		function ClearComplete(){
+				let arr = []; 
+		let checkedBefore = document.querySelectorAll(".checkedBefore");
+
+		checkedBefore.forEach((r) => {
+			arr.push(r.parentNode.parentNode); 
+		});
+
+		arr.forEach((r) => {
+					$(r).toggle();
+				});		
+				console.log(arr);
+
+		}
+
+
+		function ClearActive(){
+				let arr2 = [];
+		let notCheckedBefore = document.querySelectorAll(".notCheckedBefore");
+
+		notCheckedBefore.forEach((r) => {
+			arr2.push(r.parentNode.parentNode);
+		});
+
+		arr2.forEach((r) => {
+					$(r).toggle();
+				});
+				console.log(arr2);
+
+		}
+	</script>
+
+
+
+
+
+
+
+
+</main>
+
+
+<script src="/js/site.js"></script>
+<script src="~/js/site.js"></script>
+<reference path="/js/site.js" />
+
+
+
+

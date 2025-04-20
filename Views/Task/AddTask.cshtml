@@ -1,0 +1,57 @@
+﻿@model TodoApp.ViewModels.NewTaskViewModel
+
+@{
+    ViewData["Title"] = "AddTask";
+    SelectList taskCategories = new SelectList(ViewBag.taskCategories);
+    SelectList users = new SelectList(ViewBag.users, "Id", "UserName");
+}
+
+<h1>AddTask</h1>
+
+<hr />
+<div class="row">
+    <div class="col-3"></div>
+        <form asp-action="AddTask">
+            <div asp-validation-summary="All" class="text-danger"></div>
+         
+            
+            <div class="form-group mb-4">
+                <label asp-for="Content" class="control-label"></label>
+                <input asp-for="Content" class="form-control" />
+                @* <span asp-validation-for="Content" class="text-danger"></span> *@
+            </div>
+            <div class="form-group mb-4">
+                <label asp-for="DeadLine" class="control-label"></label>
+                <input asp-for="DeadLine" class="form-control" />
+                @* <span asp-validation-for="DeadLine" class="text-danger"></span> *@
+            </div>
+            <div class="form-group mb-4">
+                <label asp-for="Category" class="control-label"></label>
+                <select asp-for="Category" asp-items="taskCategories" class="form-control">
+                    <option value="0"> -- Select Task Category --  </option>
+                </select>
+                @* <span asp-validation-for="Category" class="text-danger"></span> *@
+            </div>
+            <div class="form-group mb-4">
+                <input asp-for="CreatedUserId" class="form-control" value="@ViewBag.userId" readonly style="display:none" />
+            </div>
+            <div class="form-group mb-4">
+                <label asp-for="AssignToUserId" class="control-label"></label>
+                <select asp-for="AssignToUserId" asp-items="users" class="form-control">
+                    <option value="0"> -- Leave Empty if u don't to assign it --  </option>
+                </select>            
+                @* <span asp-validation-for="AssignToUserId" class="text-danger"></span> *@
+            </div>
+            <div class="form-group mb-4">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+
+<div>
+    <a class="btn btn-outline-warning" asp-action="Index" asp-controller="Home">Back to Home</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
