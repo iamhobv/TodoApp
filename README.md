@@ -1,8 +1,12 @@
 # TodoApp
 ✅ **Real-Time Messaging** powered by SignalR 
+
 ✅ **Dynamic User Interface** with personalized user avatars and responsive design 
+
 ✅ **Dark Mode Support** for better accessibility 
+
 ✅ **Effortless Communication** with intuitive message input and instant updates 
+
 
 💡 **Key Highlights**: 
 
